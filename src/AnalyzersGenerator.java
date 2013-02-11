@@ -34,7 +34,7 @@ public class AnalyzersGenerator {
 			boolean useSemanticActions)
 			throws internal_error, IOException, Exception {
 		System.out.println("***************************************");
-		System.out.println("Generating Syntatical Analyzer (CUP)");
+		System.out.println("Generating Syntatic Analyzer (CUP)");
 		System.out.println("***************************************");
 
 		String[] args;
