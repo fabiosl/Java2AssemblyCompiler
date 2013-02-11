@@ -1,18 +1,15 @@
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class LexicalMain {
 	public static void executeLexicalAnalyzer(String fileName) throws IOException {
-		System.out.println("***************************************");
 		System.out.println("Running lexical analysis for " + fileName);
-		System.out.println("***************************************");
 
 		LexicalAnalyzer scanner = new LexicalAnalyzer(new FileReader(fileName));
 		while (scanner.hasNext()) {
 			scanner.next_token();
 		}
-		System.out.println("Lexical Analysis finished successfully!");
+		System.out.println("Lexical Analysis finished successfully! \n");
 	}
 
 	public static void main(String[] args) throws IOException {

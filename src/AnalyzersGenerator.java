@@ -8,10 +8,10 @@ public class AnalyzersGenerator {
 	private static final String OUTPUT_DIR = "outputSrc";
 
 	private static final String FLEX_FILE_NAME = "files" + FILE_SEPARATOR
-			+ "lcalc.flex";
+			+ "java.flex";
 
 	private static final String CUP_FILE_NAME = "files" + FILE_SEPARATOR
-			+ "ycalc.cup";
+			+ "java.cup";
 
 	private static final String CUP_FILE_NAME_WITH_ACTIONS = "files"
 			+ FILE_SEPARATOR + "ocl_semantica.cup";

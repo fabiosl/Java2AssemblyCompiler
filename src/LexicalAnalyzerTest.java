@@ -1,11 +1,9 @@
-import java.io.File;
-
 import junit.framework.TestCase;
 
 public class LexicalAnalyzerTest extends TestCase {
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
-	private static final String TESTS_DIR = System.getProperty("user.dir") + FILE_SEPARATOR + "input" + FILE_SEPARATOR + "files";
+	private static final String TESTS_DIR = System.getProperty("user.dir") + FILE_SEPARATOR + "input" + FILE_SEPARATOR + "files"+ FILE_SEPARATOR + "examples";
 
 	public void testAll() throws Exception {
 		System.out.println("===============================================");
