@@ -105,7 +105,6 @@ SingleCharacter = [^\r\n\'\\]
   "catch"                        { return symbol(CATCH); }
   "char"                         { return symbol(CHAR); }
   "class"                        { return symbol(CLASS); }
-  "const"                        { return symbol(CONST); }
   "continue"                     { return symbol(CONTINUE); }
   "do"                           { return symbol(DO); }
   "double"                       { return symbol(DOUBLE); }
@@ -124,7 +123,6 @@ SingleCharacter = [^\r\n\'\\]
   "long"                         { return symbol(LONG); }
   "native"                       { return symbol(NATIVE); }
   "new"                          { return symbol(NEW); }
-  "goto"                         { return symbol(GOTO); }
   "if"                           { return symbol(IF); }
   "public"                       { return symbol(PUBLIC); }
   "short"                        { return symbol(SHORT); }
@@ -144,7 +142,7 @@ SingleCharacter = [^\r\n\'\\]
   "throws"                       { return symbol(THROWS); }
   "try"                          { return symbol(TRY); }
   "volatile"                     { return symbol(VOLATILE); }
-  "strictfp"                     { return symbol(STRICTFP); }
+  
   
   /* boolean literals */
   "true"                         { return symbol(BOOLEAN_LITERAL, new Boolean(true)); }
@@ -253,8 +251,7 @@ SingleCharacter = [^\r\n\'\\]
   "\\\""                         { string.append( '\"' ); }
   "\\'"                          { string.append( '\'' ); }
   "\\\\"                         { string.append( '\\' ); }
-  \\[0-3]?{OctDigit}?{OctDigit}  { char val = (char) Integer.parseInt(yytext().substring(1),8);
-                                           string.append( val ); }
+  \\[0-3]?{OctDigit}?{OctDigit}  { char val = (char) Integer.parseInt(yytext().substring(1),8); string.append( val );}
   
   /* error cases */
   \\.                            { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\""); }

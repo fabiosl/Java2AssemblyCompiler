@@ -2,3 +2,4 @@
 outputSrc/*
 .settings*
 .project
+bin/*

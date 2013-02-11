@@ -33,6 +33,7 @@ public class AnalyzersGenerator {
 	public static void generateSyntacticAnalyzer(boolean displaySummary,
 			boolean useSemanticActions)
 			throws internal_error, IOException, Exception {
+		
 		System.out.println("***************************************");
 		System.out.println("Generating Syntatic Analyzer (CUP)");
 		System.out.println("***************************************");
