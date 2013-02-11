@@ -1,0 +1,232 @@
+import java_cup.runtime.*;
+import core.modeling.metamodel.*;
+import core.modeling.parser.*;
+import core.modeling.*;
+import core.nodos.*;
+
+parser code {: 
+  public void report_error(String message, Object info) {
+    String mensagem = "Erro Sintatico ";
+    if (info instanceof Symbol) {
+    	Symbol token = (Symbol) info;
+      	mensagem += "na linha " + (token.left+1) + " e coluna " + (token.right+1) + " ";
+    }
+    mensagem += ": " + message;
+    System.out.println(mensagem);
+  }
+  
+  public void report_fatal_error(String message, Object info) {
+    report_error(message, info);
+    throw new RuntimeException("Finalizando o compilador (erro fatal de sintaxe)!");
+  }
+:};
+
+// Terminais
+terminal PARENTESQ, PARENTDIR;
+terminal PONTO, DOISPONTOS, DOISPONTOSDUPLO;
+terminal VIRGULA, RESULT;
+terminal SELF, ACESSOCOLECOES;
+terminal PRE, POST, CONTEXT, APRE;
+terminal MAIOR, MAIORIGUAL, MENOR, MENORIGUAL, IGUAL, DIFERENTE;
+terminal AND, OR, NOT, XOR, IMPLIES;
+terminal IF, THEN, ELSE, ENDIF;
+terminal MAIS, MENOS, VEZES, DIVISAO;
+terminal String COLECAO;
+terminal String STRING;
+terminal Integer INTEGER;
+terminal Boolean BOOL;
+terminal Double REAL;
+terminal Object ID;
+
+// Nao-terminais
+non terminal oclExpressions, constraint, constraintRecursao, constraintAux;
+non terminal oclExpression, operationContext, timeExpression, propertyCallParameters;
+non terminal stereotype, formalParameterList, formalParameterListAux, actualParameterListAux;
+non terminal collectionOperation, contextDeclaration, actualParameterList, contextDefinition;
+
+non terminal Object collectionType;
+non terminal Object returnType;
+non terminal Object pathName;
+non terminal Object typeSpecifier;
+non terminal Object simpleTypeSpecifier;
+non terminal Object operationName;
+non terminal Object unaryOperator;
+non terminal Object addOperator;
+non terminal Object multiplyOperator;
+non terminal Object logicalOperator;
+non terminal Object relationalOperator;
+non terminal NoExpressao propertyCallCollection;
+non terminal NoExpressao logicalExpression;
+non terminal NoExpressao propertyCall;
+non terminal NoExpressao logicalExpAux;
+non terminal NoExpressao relationalExpression;
+non terminal NoExpressao multiplicativeExpression;
+non terminal NoExpressao multiplicativeExpAux;
+non terminal NoExpressao additiveExpression;
+non terminal NoExpressao additiveExpAux;
+non terminal NoExpressao unaryExpression;
+non terminal NoExpressao primaryExpression;
+non terminal NoExpressao postfixExpression;
+non terminal NoExpressao postfixExpAux;
+non terminal NoExpressao ifExpression;
+non terminal NoExpressao postfixSelfExpression;
+non terminal NoExpressao postfixSelfExpAux;
+non terminal NoExpressao postfixResultExpression;
+non terminal NoExpressao postfixResultExpAux;
+non terminal NoExpressao literal;
+non terminal NoExpressao number;
+non terminal NoExpressao expression;
+
+// Precedencia
+precedence left VIRGULA;
+precedence left IMPLIES;
+precedence left NOT;
+precedence left AND;
+precedence left OR;
+precedence left XOR;
+precedence left IGUAL, DIFERENTE;
+precedence left MENOR, MAIOR, MAIORIGUAL, MENORIGUAL;
+precedence left IF, THEN, ELSE, ENDIF;
+precedence left MAIS, MENOS;
+precedence left VEZES, DIVISAO;
+precedence left NOT;
+precedence left PONTO, ACESSOCOLECOES;
+precedence left APRE;
+
+// Regras
+start with oclExpressions;
+
+oclExpressions ::= constraint oclExpressions |;
+
+constraintRecursao ::= constraintAux |;
+
+oclExpression ::= expression:no    
+				| postfixResultExpression:noE IGUAL relationalExpression:noD;
+				
+expression ::= logicalExpression:no;
+
+logicalExpression ::= relationalExpression:noE logicalExpAux:noD;
+
+logicalExpAux ::= logicalOperator relationalExpression:noE logicalExpAux:noD |;
+													
+relationalExpression ::= additiveExpression:noE relationalOperator:op additiveExpression:noD
+					| additiveExpression:no;
+                          
+additiveExpression ::= multiplicativeExpression:noE additiveExpAux:noD;
+
+additiveExpAux ::= addOperator multiplicativeExpression:noE additiveExpAux:noD |;
+
+multiplicativeExpression ::= unaryExpression:noE multiplicativeExpAux:noD;
+
+multiplicativeExpAux ::= multiplyOperator unaryExpression:noE multiplicativeExpAux:noD |;
+
+unaryExpression ::= unaryOperator:op postfixExpression:no
+					| postfixExpression:no;
+
+ifExpression ::= IF expression:noCond THEN expression:noE ELSE expression:noD ENDIF;
+
+postfixExpression ::= primaryExpression:noE postfixExpAux:aux
+					| postfixSelfExpression:noE postfixSelfExpAux:aux
+					| postfixResultExpression:noE postfixResultExpAux:aux;
+                      
+postfixExpAux ::=  PONTO propertyCall:pc postfixExpAux:rec 
+				   | ACESSOCOLECOES:ac propertyCallCollection:pc postfixExpAux:rec
+				   |;
+
+postfixSelfExpression ::= SELF
+                    | SELF timeExpression;
+									
+postfixSelfExpAux ::= PONTO propertyCall:pc postfixExpAux:rec |;
+									
+postfixResultExpression ::= RESULT:valor;
+
+postfixResultExpAux ::= PONTO propertyCall:pc postfixExpAux:rec 
+					| ACESSOCOLECOES:ac propertyCallCollection:pc postfixExpAux:rec
+				    |;
+
+primaryExpression ::= ifExpression:no
+					| literal:no
+					| propertyCall:no
+					| PARENTESQ expression:no PARENTDIR;
+
+literal ::= number:no
+			| BOOL:valor
+			| STRING:valor;
+
+propertyCallCollection ::= collectionOperation:nomeOp timeExpression propertyCallParameters
+			| collectionOperation:nomeOp propertyCallParameters;
+
+propertyCall ::= pathName:nomeOp timeExpression propertyCallParameters
+			 | pathName:nomeAttr timeExpression
+			 | pathName:nomeOp propertyCallParameters
+			 | pathName:nomeAttr;
+				
+propertyCallParameters ::= PARENTESQ actualParameterList PARENTDIR
+						| PARENTESQ PARENTDIR;		
+				
+collectionOperation ::= ID:valor;
+
+actualParameterList ::= expression:no actualParameterListAux;
+
+actualParameterListAux ::= VIRGULA expression:no actualParameterListAux |;
+				
+timeExpression ::= APRE:valor;
+
+number ::= INTEGER:valor
+	   	  | REAL:valor;
+
+constraintAux ::= stereotype DOISPONTOS oclExpression constraintRecursao
+				 | stereotype ID DOISPONTOS oclExpression constraintRecursao;
+
+constraint ::= contextDeclaration constraintAux;
+
+stereotype ::= PRE
+              | POST;
+
+contextDeclaration ::= CONTEXT contextDefinition operationContext;
+
+contextDefinition ::= contextDefinition ID DOISPONTOSDUPLO
+            | ID:nome DOISPONTOSDUPLO;
+
+operationContext ::= operationName:nomeOp PARENTESQ formalParameterList:fplist PARENTDIR DOISPONTOS returnType:ret;
+
+returnType ::= typeSpecifier:tipo;
+
+operationName ::= ID:nome;
+
+formalParameterList ::= ID:nome DOISPONTOS typeSpecifier:tipo formalParameterListAux
+				 |;
+				
+formalParameterListAux ::= VIRGULA ID:nome DOISPONTOS typeSpecifier:tipo formalParameterListAux 
+				 |;
+
+typeSpecifier ::= simpleTypeSpecifier:tipo
+				| collectionType:tipo;
+
+collectionType ::= COLECAO:nomeColecao PARENTESQ simpleTypeSpecifier:tipo PARENTDIR;
+
+simpleTypeSpecifier ::= pathName:val;
+
+pathName ::= ID:nome
+            | ID:nome DOISPONTOSDUPLO pathName:recursao;
+
+relationalOperator ::= IGUAL
+					 | MAIOR
+					 | MENOR
+					 | MAIORIGUAL
+					 | MENORIGUAL
+					 | DIFERENTE;
+
+addOperator ::= MAIS
+			  | MENOS;
+
+multiplyOperator ::= VEZES
+				   | DIVISAO;
+
+unaryOperator ::= MENOS
+                | NOT;
+
+logicalOperator ::= AND
+				  | OR
+				  | XOR
+				  | IMPLIES; 
