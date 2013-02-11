@@ -27,7 +27,7 @@ public class AnalyzersGenerator {
 	
 	public static void generateSyntacticAnalyzer(boolean useSemanticActions) throws internal_error,
 			IOException, Exception {
-		generateSyntacticAnalyzer(false, useSemanticActions);
+		generateSyntacticAnalyzer(true, useSemanticActions);
 	}
 
 	public static void generateSyntacticAnalyzer(boolean displaySummary,
@@ -39,17 +39,9 @@ public class AnalyzersGenerator {
 
 		String[] args;
 		String cupFile = useSemanticActions ? CUP_FILE_NAME_WITH_ACTIONS : CUP_FILE_NAME;
-		if (displaySummary) {
-			args = new String[] { "-parser",
-					"SyntacticAnalyzer", "-destdir", OUTPUT_DIR,
-					"-interface",
-					cupFile };
-		} else {
-			args = new String[] { "-parser",
-					"SyntacticAnalyzer", "-destdir", OUTPUT_DIR,
-					"-interface",
-					"-nosummary", cupFile };
-		}
+		args = new String[] { "-parser", "SyntacticAnalyzer", 
+							  "-destdir", OUTPUT_DIR, 
+							  "-interface", cupFile };
 
 		java_cup.Main.main(args);
 		
