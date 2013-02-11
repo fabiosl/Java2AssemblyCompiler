@@ -41,12 +41,12 @@ public class AnalyzersGenerator {
 		String cupFile = useSemanticActions ? CUP_FILE_NAME_WITH_ACTIONS : CUP_FILE_NAME;
 		if (displaySummary) {
 			args = new String[] { "-parser",
-					"SyntaticalAnalyzerJava", "-destdir", OUTPUT_DIR,
+					"SyntacticAnalyzer", "-destdir", OUTPUT_DIR,
 					"-interface",
 					cupFile };
 		} else {
 			args = new String[] { "-parser",
-					"SyntaticalAnalyzerJava", "-destdir", OUTPUT_DIR,
+					"SyntacticAnalyzer", "-destdir", OUTPUT_DIR,
 					"-interface",
 					"-nosummary", cupFile };
 		}
