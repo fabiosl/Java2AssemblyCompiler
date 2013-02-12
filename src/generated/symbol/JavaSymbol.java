@@ -1,3 +1,4 @@
+package generated.symbol;
 public class JavaSymbol extends java_cup.runtime.Symbol {
   private int line;
   private int column;

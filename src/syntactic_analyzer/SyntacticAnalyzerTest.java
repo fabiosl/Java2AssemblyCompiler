@@ -1,4 +1,10 @@
+package syntactic_analyzer;
+import generated.LexicalAnalyzer;
+import generated.SyntacticAnalyzer;
+
 import java.io.FileReader;
+
+import util.Util;
 
 import junit.framework.TestCase;
 
@@ -20,7 +26,7 @@ public class SyntacticAnalyzerTest extends TestCase {
 		System.out.println("Running Syntactic Analyzer expecting well formed files... ");
 		
 		int testCounter = 0;
-		for (String fileName : Util.getFilesInOrder(TESTS_DIR,".java")) {
+		for (String fileName : Util.getFiles(TESTS_DIR,".java")) {
 			try {
 				executeSyntacticAnalyzer(TESTS_DIR + FILE_SEPARATOR + fileName);
 			} catch (Exception e) {
@@ -37,7 +43,7 @@ public class SyntacticAnalyzerTest extends TestCase {
 		System.out.println("\n\nRunning Syntactic Analyzer expecting files with errors... ");
 		
 		int testCounter = 0;
-		for (String fileName : Util.getFilesInOrder(TESTS_ERRORS_DIR,".java")) {
+		for (String fileName : Util.getFiles(TESTS_ERRORS_DIR,".java")) {
 			try {
 				executeSyntacticAnalyzer(TESTS_ERRORS_DIR + FILE_SEPARATOR + fileName);
 				fail("An error was expected!");

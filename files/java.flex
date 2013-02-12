@@ -1,3 +1,5 @@
+package generated;
+
 import java_cup.runtime.*;
 
 %%
@@ -144,7 +146,7 @@ SingleCharacter = [^\r\n\'\\]
   "false"                        { return symbol(BOOLEAN_LITERAL, new Boolean(false)); }
   
   /* null literal */
-  "null"                         { return symbol(NULL_LITERAL); }
+  "null"                         { return symbol(NULL); }
   
   
   /* separators */
@@ -197,18 +199,13 @@ SingleCharacter = [^\r\n\'\\]
   ">>="                          { return symbol(RSHIFTEQ); }
   ">>>="                         { return symbol(URSHIFTEQ); }
   
-  /* string literal */
+  /* String Literal */
   \"                             { yybegin(STRING); string.setLength(0); }
 
-  /* character literal */
+  /* Char Literal */
   \'                             { yybegin(CHARLITERAL); }
 
   /* numeric literals */
-
-  /* This is matched together with the minus, because the number is too big to 
-     be represented by a positive integer. */
-  "-2147483648"                  { return symbol(INTEGER_LITERAL, new Integer(Integer.MIN_VALUE)); }
-  
   {DecIntegerLiteral}            { return symbol(INTEGER_LITERAL, new Integer(yytext())); }
   {DecLongLiteral}               { return symbol(INTEGER_LITERAL, new Long(yytext().substring(0,yylength()-1))); }
   
@@ -223,10 +220,10 @@ SingleCharacter = [^\r\n\'\\]
   {DoubleLiteral}[dD]            { return symbol(FLOATING_POINT_LITERAL, new Double(yytext().substring(0,yylength()-1))); }
   
   /* comments */
-  {Comment}                      { /* ignore */ }
+  {Comment}                      {}
 
   /* whitespace */
-  {WhiteSpace}                   { /* ignore */ }
+  {WhiteSpace}                   {}
 
   /* identifiers */ 
   {Identifier}                   { return symbol(IDENTIFIER, yytext()); }  

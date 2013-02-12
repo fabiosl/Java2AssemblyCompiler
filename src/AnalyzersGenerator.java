@@ -4,7 +4,7 @@ import java_cup.internal_error;
 
 public class AnalyzersGenerator {
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator"); 
-	private static final String OUTPUT_DIR = "src"; //Add directly to src folder
+	private static final String OUTPUT_DIR = "src" + FILE_SEPARATOR + "generated"; //Add directly to src/generated folder
 	private static final String FLEX_FILE_NAME = "files" + FILE_SEPARATOR + "java.flex";
 	private static final String CUP_FILE_NAME = "files" + FILE_SEPARATOR + "java.cup";
 

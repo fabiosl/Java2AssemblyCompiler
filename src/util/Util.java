@@ -1,3 +1,4 @@
+package util;
 
 
 import java.io.File;
@@ -5,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//import core.modeling.metamodel.Classe;
-//import core.modeling.metamodel.Colecao;
-
 public class Util {
-	public static List<String> getFilesInOrder(String folder, String extension) {
+	public static List<String> getFiles(String folder, String extension) {
 		File f = new File(folder);
 		if (!f.exists()){
 			System.err.println("Couldn't open the file/directory!");

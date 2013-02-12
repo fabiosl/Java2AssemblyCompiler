@@ -1,3 +1,6 @@
+package lexical_analyzer;
+import generated.LexicalAnalyzer;
+
 import java.io.FileReader;
 import java.io.IOException;
 

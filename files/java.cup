@@ -1,3 +1,5 @@
+package generated;
+
 import java_cup.runtime.*;
 
 parser code {:
@@ -69,7 +71,7 @@ terminal java.lang.Boolean BOOLEAN_LITERAL;
 terminal java.lang.Character CHARACTER_LITERAL;
 terminal java.lang.String STRING_LITERAL;
 terminal java.lang.String IDENTIFIER; // name
-terminal NULL_LITERAL;
+terminal NULL;
 
 // ###################################################### NON TERMINALS ###################################################### //
 
@@ -194,7 +196,7 @@ non terminal constant_expression;
 start with compilation_unit;
 
 // Lexical Structure.
-literal ::= INTEGER_LITERAL | FLOATING_POINT_LITERAL | BOOLEAN_LITERAL | CHARACTER_LITERAL | STRING_LITERAL | NULL_LITERAL;
+literal ::= INTEGER_LITERAL | FLOATING_POINT_LITERAL | BOOLEAN_LITERAL | CHARACTER_LITERAL | STRING_LITERAL | NULL;
 
 // Types, Values, and Variables
 type ::= primitive_type | reference_type ;

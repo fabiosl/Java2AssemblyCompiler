@@ -1,4 +1,10 @@
+package syntactic_analyzer;
+import generated.LexicalAnalyzer;
+import generated.SyntacticAnalyzer;
+
 import java.io.FileReader;
+
+import util.Util;
 
 public class SyntacticMain {
 	private final static String EXTENSION = ".java";
@@ -29,7 +35,7 @@ public class SyntacticMain {
 			System.exit(1);
 		}
 		String filePath = args[1];
-		if (filePath.endsWith(".java")){
+		if (filePath.endsWith(EXTENSION)){
 			executeSyntacticAnalyzer(filePath);
 		}
 		else{
@@ -46,7 +52,7 @@ public class SyntacticMain {
 		
 		String location = addFileSeparatorIfNeeded(args[1]);
 		int testCounter = 1;
-		for (String fileName : Util.getFilesInOrder(location, EXTENSION)) {
+		for (String fileName : Util.getFiles(location, EXTENSION)) {
 			executeSyntacticAnalyzer(location + fileName);
 			testCounter++;
 		}
