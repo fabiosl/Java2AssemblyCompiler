@@ -29,11 +29,6 @@ import java_cup.runtime.*;
     return new JavaSymbol(type, yyline+1, yycolumn+1, value);
   }
 
-  /** 
-   * assumes correct representation of a long value for 
-   * specified radix in scanner buffer from <code>start</code> 
-   * to <code>end</code> 
-   */
   private long parseLong(int start, int end, int radix) {
     long result = 0;
     long digit;
@@ -141,7 +136,7 @@ SingleCharacter = [^\r\n\'\\]
   "throw"                        { return symbol(THROW); }
   "throws"                       { return symbol(THROWS); }
   "try"                          { return symbol(TRY); }
-  "volatile"                     { return symbol(VOLATILE); }
+  "threadsafe"                   { return symbol(THREADSAFE); }
   
   
   /* boolean literals */
@@ -270,9 +265,7 @@ SingleCharacter = [^\r\n\'\\]
   "\\\""\'                       { yybegin(YYINITIAL); return symbol(CHARACTER_LITERAL, new Character('\"'));}
   "\\'"\'                        { yybegin(YYINITIAL); return symbol(CHARACTER_LITERAL, new Character('\''));}
   "\\\\"\'                       { yybegin(YYINITIAL); return symbol(CHARACTER_LITERAL, new Character('\\')); }
-  \\[0-3]?{OctDigit}?{OctDigit}\' { yybegin(YYINITIAL); 
-                                          int val = Integer.parseInt(yytext().substring(1,yylength()-1),8);
-                                        return symbol(CHARACTER_LITERAL, new Character((char)val)); }
+  \\[0-3]?{OctDigit}?{OctDigit}\' { yybegin(YYINITIAL); int val = Integer.parseInt(yytext().substring(1,yylength()-1),8); return symbol(CHARACTER_LITERAL, new Character((char)val)); }
   
   /* error cases */
   \\.                            { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\""); }

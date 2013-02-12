@@ -1,7 +1,10 @@
 import java_cup.runtime.*;
 
-parser code {: 
-    //Overrided Method
+parser code {:
+
+    /**The provided grammar does not support Java Generics and foreach() statement;*/
+    
+    @Override
     public void report_fatal_error(String message, Object info) throws Exception {
         String errorMessage = ""; 
         if (info instanceof JavaSymbol){
@@ -12,17 +15,18 @@ parser code {:
     }
 :};
 
+
+// ###################################################### TERMINALS ###################################################### //
 terminal BOOLEAN; 
-terminal BYTE, SHORT, INT, LONG, CHAR;
-terminal FLOAT, DOUBLE; 
+terminal BYTE, CHAR, SHORT;
+terminal FLOAT, DOUBLE, INT, LONG ; 
+terminal PUBLIC, PROTECTED, PRIVATE;
 terminal LBRACK, RBRACK; 
 terminal DOT;
 terminal SEMICOLON, MULT, COMMA, LBRACE, RBRACE, EQ, LPAREN, RPAREN, COLON;
 terminal PACKAGE;
 terminal IMPORT; 
-terminal PUBLIC, PROTECTED, PRIVATE; 
-terminal STATIC; 
-terminal ABSTRACT, FINAL, NATIVE, SYNCHRONIZED, TRANSIENT, VOLATILE;
+terminal STATIC, FINAL, ABSTRACT, NATIVE, SYNCHRONIZED, TRANSIENT, THREADSAFE; //Threadsafe is not a keyword for Java Language, but it is declared on the provided grammar. 
 terminal CLASS; 
 terminal EXTENDS;
 terminal IMPLEMENTS;
@@ -67,8 +71,7 @@ terminal java.lang.String STRING_LITERAL;
 terminal java.lang.String IDENTIFIER; // name
 terminal NULL_LITERAL;
 
-// The Syntactic Grammar
-non terminal goal;
+// ###################################################### NON TERMINALS ###################################################### //
 
 // Lexical Structure
 non terminal literal;
@@ -187,10 +190,8 @@ non terminal expression_opt, expression;
 non terminal constant_expression;
 
 
-start with goal;
-
-// The Syntactic Grammar
-goal ::=  compilation_unit;
+// ###################################################### RULES ###################################################### //
+start with compilation_unit;
 
 // Lexical Structure.
 literal ::= INTEGER_LITERAL | FLOATING_POINT_LITERAL | BOOLEAN_LITERAL | CHARACTER_LITERAL | STRING_LITERAL | NULL_LITERAL;
@@ -231,19 +232,10 @@ type_declaration ::= class_declaration | interface_declaration | SEMICOLON;
 // Productions used only in the LALR(1) grammar
 modifiers_opt::= | modifiers ;
 modifiers ::= modifier | modifiers modifier;
-modifier ::= PUBLIC | PROTECTED | PRIVATE | STATIC |  ABSTRACT | FINAL | NATIVE | SYNCHRONIZED | TRANSIENT | VOLATILE;
+modifier ::= PUBLIC | PROTECTED | PRIVATE | STATIC | ABSTRACT | FINAL | NATIVE | SYNCHRONIZED | TRANSIENT | THREADSAFE;
 
 
-
-
-
-
-
-
-
-
-
-// ###################################################### Classes ###################################################### //
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ Classes ++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 // Class Declaration:
 class_declaration ::= modifiers_opt CLASS IDENTIFIER super_opt interfaces_opt class_body ;
 super_cl ::= EXTENDS class_type ;
@@ -295,8 +287,7 @@ explicit_constructor_invocation ::=
   |  primary DOT SUPER LPAREN argument_list_opt RPAREN SEMICOLON
   ;
 
-
-// ###################################################### Interfaces ###################################################### //
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ Interfaces ++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 // Interface Declarations
 interface_declaration ::= modifiers_opt INTERFACE IDENTIFIER extends_interfaces_opt interface_body ;
 extends_interfaces_opt ::= | extends_interfaces;
@@ -399,8 +390,7 @@ finally ::= FINALLY block;
 
 
 
-// ###################################################### Expressions ###################################################### //
-
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ Expressions ++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 primary ::= primary_no_new_array | array_creation_expression ;
 primary_no_new_array ::=
     literal
@@ -420,11 +410,10 @@ primary_no_new_array ::=
 class_instance_creation_expression ::=
     NEW class_type LPAREN argument_list_opt RPAREN
   |  NEW class_type LPAREN argument_list_opt RPAREN class_body
-  |  primary DOT NEW IDENTIFIER
-      LPAREN argument_list_opt RPAREN
-  |  primary DOT NEW IDENTIFIER
-      LPAREN argument_list_opt RPAREN class_body
+  |  primary DOT NEW IDENTIFIER LPAREN argument_list_opt RPAREN
+  |  primary DOT NEW IDENTIFIER LPAREN argument_list_opt RPAREN class_body
   ;
+
 argument_list_opt ::= | argument_list;
 argument_list ::= expression | argument_list COMMA expression;
 array_creation_expression ::=

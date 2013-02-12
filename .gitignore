@@ -3,3 +3,4 @@ outputSrc/*
 .settings*
 .project
 bin/*
+*.java~

@@ -11,7 +11,6 @@ public class SyntacticMain {
 			System.out.println(helpMessage);
 			System.exit(1);
 		}
-
 		String firstArg = args[0];
 		if (firstArg.equals("-d")) {
 			analyzeDirectory(args);
@@ -45,8 +44,8 @@ public class SyntacticMain {
 			System.exit(1);
 		}
 		
-		String location = addSlashIfNeeded(args[1]);
-		int testCounter = 0;
+		String location = addFileSeparatorIfNeeded(args[1]);
+		int testCounter = 1;
 		for (String fileName : Util.getFilesInOrder(location, EXTENSION)) {
 			executeSyntacticAnalyzer(location + fileName);
 			testCounter++;
@@ -55,9 +54,9 @@ public class SyntacticMain {
 		
 	}
 
-	private static String addSlashIfNeeded(String string){
-		if (! string.endsWith("/")){
-			string += "/";
+	private static String addFileSeparatorIfNeeded(String string){
+		if (! string.endsWith(System.getProperty("file.separator"))){
+			string += System.getProperty("file.separator");
 		}
 		return string;
 	}
@@ -75,6 +74,4 @@ public class SyntacticMain {
 			System.err.println(e.getMessage());
 		}
 	}
-	
-	
 }
