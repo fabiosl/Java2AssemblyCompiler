@@ -1,5 +1,6 @@
 package generated;
 
+import generated.symbol.JavaSymbol;
 import java_cup.runtime.*;
 
 parser code {:

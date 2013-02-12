@@ -1,6 +1,7 @@
 package generated;
 
 import java_cup.runtime.*;
+import generated.symbol.JavaSymbol;
 
 %%
 
