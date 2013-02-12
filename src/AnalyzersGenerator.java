@@ -3,60 +3,34 @@ import java.io.IOException;
 import java_cup.internal_error;
 
 public class AnalyzersGenerator {
-	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
-	
+	private static final String FILE_SEPARATOR = System.getProperty("file.separator"); 
 	private static final String OUTPUT_DIR = "outputSrc";
-
-	private static final String FLEX_FILE_NAME = "files" + FILE_SEPARATOR
-			+ "java.flex";
-
-	private static final String CUP_FILE_NAME = "files" + FILE_SEPARATOR
-			+ "java.cup";
-
-	private static final String CUP_FILE_NAME_WITH_ACTIONS = "files"
-			+ FILE_SEPARATOR + "ocl_semantica.cup";
+	private static final String FLEX_FILE_NAME = "files" + FILE_SEPARATOR + "java.flex";
+	private static final String CUP_FILE_NAME = "files" + FILE_SEPARATOR + "java.cup";
 
 	public static void generateLexicalAnalyzer() {
-		System.out.println("***************************************");
 		System.out.println("Generating lexical analyzer (JFlex) ...");
-		System.out.println("***************************************");
 		String[] args = { FLEX_FILE_NAME, "-d", OUTPUT_DIR };
 		JFlex.Main.main(args);
-		System.out.println();
+		System.out.println("Lexical Analyzer generated Successfully! \n\n");
 	}
+
 	
-	public static void generateSyntacticAnalyzer(boolean useSemanticActions) throws internal_error,
-			IOException, Exception {
-		generateSyntacticAnalyzer(true, useSemanticActions);
-	}
-
-	public static void generateSyntacticAnalyzer(boolean displaySummary,
-			boolean useSemanticActions)
-			throws internal_error, IOException, Exception {
+	public static void generateSyntacticAnalyzer() throws internal_error, IOException, Exception {
 		
-		System.out.println("***************************************");
-		System.out.println("Generating Syntatic Analyzer (CUP)");
-		System.out.println("***************************************");
-
-		String[] args;
-		String cupFile = useSemanticActions ? CUP_FILE_NAME_WITH_ACTIONS : CUP_FILE_NAME;
-		args = new String[] { "-parser", "SyntacticAnalyzer", 
+		System.out.println("Generating Syntatic Analyzer (CUP) ...");
+		String[] args =  new String[] { "-parser", "SyntacticAnalyzer", 
 							  "-destdir", OUTPUT_DIR, 
-							  "-interface", cupFile };
+							  "-interface", CUP_FILE_NAME };
 
-		java_cup.Main.main(args);
-		
-		if (!displaySummary) {
-			System.out.println("Success!");
-		}
-
-		System.out.println();
+		java_cup.Main.main(args); 
+		Thread.sleep(1000); // CUP log comes assynchronously. 
+		System.out.println("Syntactic Analyzer generated Successfully!");
 	}
 
 	public static void main(String[] args) throws internal_error, IOException, Exception {
-		boolean useSemanticAtions = false; //args.length == 0 ? false : args[0].equals("-actions");
-		
 		generateLexicalAnalyzer();
-		generateSyntacticAnalyzer(useSemanticAtions);
+		System.out.println("#######################################################################################################################################################################################################################\n\n");
+		generateSyntacticAnalyzer();
 	}
 }

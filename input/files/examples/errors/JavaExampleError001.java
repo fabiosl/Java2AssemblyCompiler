@@ -1,5 +1,7 @@
 package errors;
 
-public clas JavaExampleError001 {
-	
+public class JavaExampleError001 {
+	method() public { // public stmt declared after method declaration.
+		
+	}
 }

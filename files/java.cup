@@ -1,67 +1,63 @@
 import java_cup.runtime.*;
 
 parser code {: 
-    public void report_error(String message, Object info) {
-        StringBuffer m = new StringBuffer("Error ");
-        if (info instanceof java_cup.runtime.Symbol) 
-            m.append( "("+info.toString()+")" );
-   
-        m.append(" : "+message);
-        System.out.println(m);
- }
-  
- public void report_fatal_error(String message, Object info) {
-  report_error(message, info);
-  throw new RuntimeException("Fatal Syntax Error");
- }
+    //Overrided Method
+    public void report_fatal_error(String message, Object info) throws Exception {
+        String errorMessage = ""; 
+        if (info instanceof JavaSymbol){
+            JavaSymbol symbol = (JavaSymbol) info;
+            errorMessage = (String.format("Error on line: %d, column %d! Could not parse! ", symbol.getLine(),symbol.getColumn()));
+        }
+        throw new Exception(errorMessage);
+    }
 :};
 
-terminal BOOLEAN; // primitive_type
-terminal BYTE, SHORT, INT, LONG, CHAR; // integral_type
-terminal FLOAT, DOUBLE; // floating_point_type
-terminal LBRACK, RBRACK; // array_type
-terminal DOT; // qualified_name
+terminal BOOLEAN; 
+terminal BYTE, SHORT, INT, LONG, CHAR;
+terminal FLOAT, DOUBLE; 
+terminal LBRACK, RBRACK; 
+terminal DOT;
 terminal SEMICOLON, MULT, COMMA, LBRACE, RBRACE, EQ, LPAREN, RPAREN, COLON;
-terminal PACKAGE; // package_declaration
-terminal IMPORT; // import_declaration
-terminal PUBLIC, PROTECTED, PRIVATE; // modifier
-terminal STATIC; // modifier
+terminal PACKAGE;
+terminal IMPORT; 
+terminal PUBLIC, PROTECTED, PRIVATE; 
+terminal STATIC; 
 terminal ABSTRACT, FINAL, NATIVE, SYNCHRONIZED, TRANSIENT, VOLATILE;
-terminal CLASS; // class_declaration
-terminal EXTENDS; // super
-terminal IMPLEMENTS; // interfaces
-terminal VOID; // method_header
-terminal THROWS; // throws
-terminal THIS, SUPER; // explicit_constructor_invocation
-terminal INTERFACE; // interface_declaration
-terminal IF, ELSE; // if_then_statement, if_then_else_statement
-terminal SWITCH; // switch_statement
-terminal CASE, DEFAULT; // switch_label
-terminal DO, WHILE; // while_statement, do_statement
-terminal FOR; // for_statement
-terminal BREAK; // break_statement
-terminal CONTINUE; // continue_statement
-terminal RETURN; // return_statement
-terminal THROW; // throw_statement
-terminal TRY; // try_statement
-terminal CATCH; // catch_clause
-terminal FINALLY; // finally
-terminal NEW; // class_instance_creation_expression
-terminal PLUSPLUS; // postincrement_expression
-terminal MINUSMINUS; // postdecrement_expression
+terminal CLASS; 
+terminal EXTENDS;
+terminal IMPLEMENTS;
+terminal VOID;
+terminal THROWS;
+terminal THIS, SUPER; 
+terminal INTERFACE; 
+terminal IF, ELSE; //Simple if; If then else;
+terminal SWITCH; 
+terminal CASE, DEFAULT; 
+terminal DO, WHILE; 
+terminal FOR;
+terminal BREAK;
+terminal CONTINUE; 
+terminal RETURN;
+terminal THROW;
+terminal TRY; 
+terminal CATCH; 
+terminal FINALLY;
+terminal NEW; 
+terminal PLUSPLUS;
+terminal MINUSMINUS;
 terminal PLUS, MINUS, COMP, NOT, DIV, MOD;
-terminal LSHIFT, RSHIFT, URSHIFT; // shift_expression
-terminal LT, GT, LTEQ, GTEQ, INSTANCEOF; // relational_expression
-terminal EQEQ, NOTEQ; // equality_expression
-terminal AND; // and_expression
-terminal XOR; // exclusive_or_expression
-terminal OR; // inclusive_or_expression
-terminal ANDAND; // conditional_and_expression
-terminal OROR; // conditional_or_expression
-terminal QUESTION; // conditional_expression
-terminal MULTEQ, DIVEQ, MODEQ, PLUSEQ, MINUSEQ; // assignment_operator
-terminal LSHIFTEQ, RSHIFTEQ, URSHIFTEQ; // assignment_operator
-terminal ANDEQ, XOREQ, OREQ; // assignment_operator
+terminal LSHIFT, RSHIFT, URSHIFT; 
+terminal LT, GT, LTEQ, GTEQ, INSTANCEOF; 
+terminal EQEQ, NOTEQ; 
+terminal AND;
+terminal XOR;
+terminal OR; 
+terminal ANDAND;
+terminal OROR; 
+terminal QUESTION;
+terminal MULTEQ, DIVEQ, MODEQ, PLUSEQ, MINUSEQ; 
+terminal LSHIFTEQ, RSHIFTEQ, URSHIFTEQ;
+terminal ANDEQ, XOREQ, OREQ; 
 
 terminal java.lang.Number INTEGER_LITERAL;
 terminal java.lang.Number FLOATING_POINT_LITERAL;

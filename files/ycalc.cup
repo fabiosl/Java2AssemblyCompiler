@@ -66,11 +66,7 @@ parser code {:
         System.err.println(m);
     }
    
-    /* Change the method report_fatal_error so when it reports a fatal
-       error it will display the line and column number of where the
-       fatal error occurred in the input as well as the reason for the
-       fatal error which is passed into the method in the object
-       'message' and then exit.*/
+    
     public void report_fatal_error(String message, Object info) {
         report_error(message, info);
         System.exit(1);

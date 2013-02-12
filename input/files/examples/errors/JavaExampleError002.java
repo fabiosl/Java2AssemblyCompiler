@@ -1,5 +1,5 @@
-package errors;
-
 public class JavaExampleError002 {
-	int private test; // should be private int
+	private int test; // should be private int
 }
+
+package errors; //Package declaration on the EOF

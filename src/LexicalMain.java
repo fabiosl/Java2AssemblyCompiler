@@ -14,18 +14,14 @@ public class LexicalMain {
 
 	public static void main(String[] args) throws IOException {
 		if (args.length != 1) {
-			System.err.println("Forma de uso incorreta! Veja abaixo a formas correta para executar!\n");
-			System.err.println("\tjava -jar AnalisadorLexicoOclJml.jar <endereco_do_arquivo>");
+			System.err.println("\tPlease inform the file");
 			System.exit(1);
 		}
-
 		try {
 			executeLexicalAnalyzer(args[0]);
 		} catch (Exception e) {
-			System.out.println(">>> Ocorreu um erro durante a analise, impossivel continuar, veja os logs abaixo:");
+			System.out.println("Error on lexical Analysis:");
 			System.out.println(e.getMessage());
 		}
-
-		System.out.println("=======================================");
 	}
 }
